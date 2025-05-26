@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RedisModule as NestRedisModule } from '@liaoliaots/nestjs-redis';
 import { URL } from 'url';
+import { RedisService } from './redis.service';
 
 @Module({
   imports: [
@@ -12,6 +13,8 @@ import { URL } from 'url';
       },
     }),
   ],
-  exports: [NestRedisModule],
+  providers: [RedisService],
+  exports: [RedisService],
 })
 export class RedisModule {}
+
