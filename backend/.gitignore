@@ -1,0 +1,21 @@
+
+# Node.js
+node_modules/
+dist/
+npm-debug.log
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# IDEs
+.vscode/
+.idea/
+
+# Miscellaneous
+*.log
+.env
+*.md
+
+# Ignore scripts directory (optional, as discussed earlier)
+scripts/
