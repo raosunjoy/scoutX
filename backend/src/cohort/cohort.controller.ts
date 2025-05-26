@@ -11,17 +11,12 @@ export class CohortController {
 
   @Get('data/:cohortId')
   async getCohortData(@Param('cohortId') cohortId: string) {
-    return this.cohortService.getCohortData(cohortId);
+    return this.cohortService.fetchCohortData(cohortId);
   }
 
   @Get('players/:cohortId')
   async getPlayers(@Param('cohortId') cohortId: string) {
-    return this.playerService.getPlayers(cohortId);
-  }
-
-  @Get('swot/:cohortId/:playerName')
-  async getPlayerSWOT(@Param('cohortId') cohortId: string, @Param('playerName') playerName: string) {
-    return this.playerService.generateSWOT(cohortId, playerName);
+    return this.playerService.getPlayersByCohort(cohortId);
   }
 
   @Get('compare-players/:cohortId')
@@ -34,7 +29,24 @@ export class CohortController {
   }
 
   @Get('performance-trends/:cohortId/:playerName')
-  async getPerformanceTrends(@Param('cohortId') cohortId: string, @Param('playerName') playerName: string) {
+  async getPerformanceTrends(
+    @Param('cohortId') cohortId: string,
+    @Param('playerName') playerName: string,
+  ) {
     return this.playerService.getPerformanceTrends(cohortId, playerName);
+  }
+
+  @Get('academy-rankings/:cohortId')
+  async getAcademyRankings(@Param('cohortId') cohortId: string) {
+    return this.playerService.getAcademyRankings(cohortId);
+  }
+
+  @Get('swot/:cohortId/:playerName')
+  async getSWOT(
+    @Param('cohortId') cohortId: string,
+    @Param('playerName') playerName: string,
+  ) {
+    const comparison = await this.playerService.comparePlayers(cohortId, playerName, playerName);
+    return comparison.swot[playerName];
   }
 }

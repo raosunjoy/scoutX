@@ -1,14 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { CohortController } from './cohort.controller';
 import { CohortService } from './cohort.service';
 import { PlayerService } from './player.service';
-import { Cohort, CohortSchema } from './cohort.schema';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: 'Cohort', schema: CohortSchema }]),
-  ],
+  imports: [DatabaseModule],
   controllers: [CohortController],
   providers: [CohortService, PlayerService],
   exports: [CohortService, PlayerService],

@@ -1,0 +1,47 @@
+{
+  "version": "0.1.0",
+  "name": "mock_program",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [],
+      "args": [],
+      "discriminator": [1, 2, 3, 4, 5, 6, 7, 8]
+    },
+    {
+      "name": "mintToken",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ],
+      "discriminator": [9, 10, 11, 12, 13, 14, 15, 16]
+    }
+  ],
+  "accounts": [],
+  "types": [],
+  "address": "YourProgramIdHere",
+  "metadata": {
+    "name": "mock_program",
+    "version": "0.1.0",
+    "spec": "mock"
+  }
+}

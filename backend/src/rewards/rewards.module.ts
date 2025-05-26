@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { RewardsService } from './rewards.service';
-import { Trade, TradeSchema } from '../trade/trade.schema';
+import { DatabaseModule } from '../database/database.module';
+import { RedisModule } from '../redis/redis.module'; // Updated import path
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: 'Trade', schema: TradeSchema }]),
-  ],
+  imports: [DatabaseModule, RedisModule],
   providers: [RewardsService],
   exports: [RewardsService],
 })

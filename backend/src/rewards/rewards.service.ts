@@ -1,55 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Trade } from '../trade/trade.schema';
-import { Connection, PublicKey } from '@solana/web3.js';
-import { getAssociatedTokenAddress, getAccount, transfer, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { InjectModel } from '@nestjs/mongoose';
+import { Cohort } from '../cohort/cohort.schema';
+import { RedisService } from '../redis/redis.service'; // Updated import path
 
 @Injectable()
 export class RewardsService {
-  private connection: Connection;
+  constructor(
+    @InjectModel(Cohort.name) private cohortModel: Model<Cohort>,
+    private redisService: RedisService,
+  ) {}
 
-  constructor(@InjectModel('Trade') private tradeModel: Model<Trade>) {
-    this.connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
+  async calculateRewards(cohortId: string) {
+    const cached = await this.redisService.get(`rewards:${cohortId}`);
+    if (cached) return JSON.parse(cached);
+
+    const cohort = await this.cohortModel.findOne({ cohortId }).exec();
+    const rewards = this.computeRewards(cohort);
+    await this.redisService.set(`rewards:${cohortId}`, JSON.stringify(rewards));
+    return rewards;
   }
 
-  async airdropTokens(userWallet: string, amount: number, cohortId: string) {
-    const adminWalletSecret = process.env.ADMIN_WALLET_SECRET;
-    if (!adminWalletSecret) {
-      throw new Error('Admin wallet secret not provided');
-    }
-    const adminWallet = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(adminWalletSecret)));
-
-    const userPublicKey = new PublicKey(userWallet);
-    const tokenMint = new PublicKey(cohortId); // Cohort's token address
-
-    const userTokenAccountAddress = await getAssociatedTokenAddress(tokenMint, userPublicKey);
-    const adminTokenAccountAddress = await getAssociatedTokenAddress(tokenMint, adminWallet.publicKey);
-
-    await transfer(
-      this.connection,
-      adminWallet,
-      adminTokenAccountAddress,
-      userTokenAccountAddress,
-      adminWallet.publicKey,
-      amount,
-      [],
-      TOKEN_PROGRAM_ID
-    );
-
-    return { message: `${amount} tokens airdropped to ${userWallet}` };
-  }
-
-  async getTopTrader(cohortId: string, startDate: Date, endDate: Date) {
-    const trades = await this.tradeModel
-      .aggregate([
-        { $match: { cohortId, timestamp: { $gte: startDate, $lte: endDate } } },
-        { $group: { _id: '$userWallet', totalVolume: { $sum: { $multiply: ['$amount', '$price'] } } } },
-        { $sort: { totalVolume: -1 } },
-        { $limit: 1 },
-      ])
-      .exec();
-
-    return trades.length > 0 ? { userWallet: trades[0]._id, totalVolume: trades[0].totalVolume } : null;
+  private computeRewards(cohort: Cohort) {
+    // Placeholder logic
+    return { cohortId: cohort.cohortId, points: 100 };
   }
 }

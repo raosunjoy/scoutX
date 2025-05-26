@@ -1,27 +1,21 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CohortModule } from './cohort/cohort.module';
+import { RewardsModule } from './rewards/rewards.module';
 import { MintModule } from './mint/mint.module';
 import { TradeModule } from './trade/trade.module';
-import { CohortModule } from './cohort/cohort.module';
-import { PlayerModule } from './player/player.module';
-import { RewardsModule } from './rewards/rewards.module';
-import { WalletModule } from './wallet/wallet.module';
-import { IpfsModule } from './ipfs/ipfs.module';
-import { AuthModule } from './auth/auth.module';
-import { PortfolioModule } from './portfolio/portfolio.module';
+import { DatabaseModule } from './database/database.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/scoutx'),
+    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost/scoutx'),
+    DatabaseModule,
+    CohortModule,
+    RewardsModule,
     MintModule,
     TradeModule,
-    CohortModule,
-    PlayerModule,
-    RewardsModule,
-    WalletModule,
-    IpfsModule,
-    AuthModule,
-    PortfolioModule,
+    RedisModule,
   ],
 })
 export class AppModule {}
