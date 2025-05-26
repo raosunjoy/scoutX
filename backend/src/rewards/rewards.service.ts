@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cohort } from '../cohort/cohort.schema';
-import { RedisService } from '../redis/redis.service'; // Updated import path
+import { RedisService } from '../redis/redis.service''; // Updated import path
 
 @Injectable()
 export class RewardsService {
