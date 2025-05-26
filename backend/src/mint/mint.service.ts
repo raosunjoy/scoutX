@@ -89,7 +89,7 @@ export class MintService {
     setProvider(provider);
 
     const programId = new PublicKey(process.env.MOCK_PROGRAM_ID || 'YourProgramIdHere');
-    const program = new Program(mockProgramIdl as unknown as Idl, programId);
+    const program = new Program(mockProgramIdl as Idl, programId as PublicKey, provider as Provider);
 
     // 6. Derive token account (placeholder logic, adjust as needed)
     const userPublicKey = new PublicKey(userWallet);
@@ -117,4 +117,3 @@ export class MintService {
     }
   }
 }
-
