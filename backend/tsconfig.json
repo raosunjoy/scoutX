@@ -23,6 +23,6 @@
       "@coral-xyz/anchor": ["node_modules/@coral-xyz/anchor/dist/cjs"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/mint/dto/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
