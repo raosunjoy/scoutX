@@ -8,8 +8,6 @@ COPY . .
 RUN npm run build
 # Copy the idl directory to dist/mint/idl/
 RUN mkdir -p dist/mint/idl && cp src/mint/idl/mock-program.json dist/mint/idl/
-# Debug: List the contents of dist/mint/dto/
-RUN ls -l dist/mint/dto/
 
 # Production stage
 FROM node:20-alpine
@@ -19,3 +17,4 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY package*.json ./
 EXPOSE 3000
 CMD ["npm", "run", "start:prod"]
+
