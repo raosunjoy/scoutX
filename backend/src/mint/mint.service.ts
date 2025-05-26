@@ -16,6 +16,7 @@ import {
   Idl,
   setProvider,
   BN,
+  Provider,
 } from '@coral-xyz/anchor';
 import * as mockProgramIdl from './idl/mock-program.json';
 import { MockProgramIdl } from './idl/mock-program-idl';
@@ -89,7 +90,7 @@ export class MintService {
     setProvider(provider);
 
     const programId = new PublicKey(process.env.MOCK_PROGRAM_ID || 'YourProgramIdHere');
-    const program = new Program(mockProgramIdl as Idl, programId as PublicKey, provider as Provider);
+    const program = new Program(mockProgramIdl as Idl, programId, provider);
 
     // 6. Derive token account (placeholder logic, adjust as needed)
     const userPublicKey = new PublicKey(userWallet);
