@@ -62,7 +62,7 @@ export class TradeService {
       const adminWalletSecret = process.env.ADMIN_WALLET_SECRET || '[]';
       const adminWallet = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(adminWalletSecret)));
       const userPublicKey = new PublicKey(userWallet);
-      const mintPublicKey = new PublicKey(cohortId);
+      const mintPublicKey = new PublicKey(process.env.MINT_ADDRESS || ''); // Use the correct mint address from env
 
       const adminTokenAccount = await getAssociatedTokenAddress(mintPublicKey, adminWallet.publicKey);
       const userTokenAccount = await getAssociatedTokenAddress(mintPublicKey, userPublicKey);
