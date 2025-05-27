@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
 @Injectable()
 export class RedisService {
   private readonly redis: Redis;
+  private readonly logger = new Logger(RedisService.name);
 
   constructor() {
-    this.redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+    const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+    this.logger.log(`Connecting to Redis at ${redisUrl}`);
+    this.redis = new Redis(redisUrl);
   }
 
   async get(key: string): Promise<string | null> {
