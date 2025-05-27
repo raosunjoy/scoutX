@@ -11,7 +11,9 @@ export class RewardsService {
   constructor(
     @InjectModel(Cohort.name) private cohortModel: Model<Cohort>,
     private readonly redisService: RedisService,
-  ) {}
+  ) {
+    this.logger.log('RewardsService instantiated');
+  }
 
   async someMethod(cohortId: string) {
     try {
